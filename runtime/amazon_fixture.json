@@ -1,0 +1,18 @@
+{
+  "starting_revenue": 716900,
+  "net_debt": -57400,
+  "shares_outstanding": 10730,
+  "forecast_years": 7,
+  "revenue_growth": [0.11, 0.10, 0.09, 0.08, 0.07, 0.06, 0.06],
+  "operating_margin": [0.12, 0.125, 0.13, 0.135, 0.14, 0.145, 0.15],
+  "capex_pct_revenue": [0.16, 0.15, 0.14, 0.12, 0.11, 0.10, 0.09],
+  "da_pct_revenue": [0.058, 0.060, 0.062, 0.064, 0.066, 0.068, 0.070],
+  "nwc_pct_revenue": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+  "tax_rate": 0.15,
+  "terminal_growth": 0.025,
+  "risk_free_rate": 0.043,
+  "equity_risk_premium": 0.055,
+  "beta": 1.30,
+  "cost_of_debt": 0.05,
+  "debt_to_total_capital": 0.025
+}

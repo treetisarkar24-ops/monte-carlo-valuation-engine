@@ -1,0 +1,100 @@
+{
+  "company": "Amazon.com, Inc.",
+  "ticker": "AMZN",
+  "terminal_growth": 0.025,
+  "market_price": 246.03,
+  "market_date": "2026-06-05",
+  "purpose": "A production application of the finished engine to a real, large-cap company that is mid-way through an extraordinary capital-investment cycle. No engine, convergence, N_GRID, or shock-calibration logic was modified. Amazon was chosen deliberately because its current heavy capex regime stresses the engine's 'capex as a % of revenue' assumption \u2014 exactly the fragility the DCFInputs documentation flags \u2014 making it a useful real-world test of the inputs, not the architecture.",
+  "base_note": "FY2025 actuals (revenue $716.9B, net income $77.7B, D&A $41.9B, capex >$100B, long-term debt $65.7B, cash+marketable securities ~$123B, ~10.73B shares). 7-year explicit horizon, engine seed = 42 throughout.",
+  "assumptions": [
+    [
+      "Starting revenue",
+      "$716,900M",
+      "FY2025 actual net sales (+12% YoY)"
+    ],
+    [
+      "Net debt",
+      "-$57,400M",
+      "Net cash: long-term debt $65.7B minus cash $86.8B and marketable securities $36.2B. Operating-lease liabilities excluded (treated as operating, not financing)."
+    ],
+    [
+      "Shares outstanding",
+      "10,730M",
+      "Approx. diluted share count, FY2025"
+    ],
+    [
+      "Forecast horizon",
+      "7 years",
+      "Explicit-forecast window before terminal value"
+    ],
+    [
+      "Revenue growth",
+      "11% -> 6%",
+      "Fades from low-double-digit (AWS + ads led) toward mature large-cap single digits"
+    ],
+    [
+      "Operating margin",
+      "12% -> 15%",
+      "Gradual expansion as higher-margin AWS and advertising grow as a share of mix"
+    ],
+    [
+      "Capex % revenue",
+      "16% -> 9%",
+      "Elevated AI/datacenter buildout now (FY2025 capex >$100B; management guided ~$200B for 2026), normalising over the horizon. This is the fixture's most aggressive and most uncertain assumption."
+    ],
+    [
+      "D&A % revenue",
+      "5.8% -> 7.0%",
+      "Rising as the AI-era asset base grows and server useful lives shorten"
+    ],
+    [
+      "NWC % revenue",
+      "0.0% flat",
+      "Conservatively neutral; Amazon historically runs negative working capital (supplier-financed), so this understates a genuine cash advantage"
+    ],
+    [
+      "Tax rate",
+      "15%",
+      "Near recent effective rate"
+    ],
+    [
+      "Terminal growth",
+      "2.5%",
+      "Long-run nominal GDP-like"
+    ],
+    [
+      "Risk-free rate",
+      "4.3%",
+      "Long Treasury"
+    ],
+    [
+      "Equity risk premium",
+      "5.5%",
+      "Standard equity premium"
+    ],
+    [
+      "Beta",
+      "1.30",
+      "Above-market systematic risk; published readings ranged ~1.3-1.5, the lower end chosen as a central view"
+    ],
+    [
+      "Cost of debt",
+      "5.0%",
+      "High-grade issuer at current rates"
+    ],
+    [
+      "Debt / total capital",
+      "2.5%",
+      "Minimal financial leverage relative to ~$2.6T market cap"
+    ]
+  ],
+  "assumptions_caveat": "These are analyst assumptions derived from FY2025 actuals and a deliberately conservative central view - not a forecast and not investment advice. The capex trajectory in particular smooths over a near-term spike (management's ~$200B 2026 guide implies capex well above the 16% starting point); the Monte Carlo layer widens this band, but the central fixture stays conservative.",
+  "shock_interpretation": "Shocks shift the whole distribution down (shocked mean ~$90.9 vs continuous ~$98.4) and fatten the left tail (P5 falls from ~$53.8 to ~$40.2, min from $8.36 to slightly negative). A small fraction of shocked paths (0.05%) cross into negative intrinsic value - Amazon's thinner GAAP margins and heavy ongoing investment leave less cushion than a net-cash, high-margin software peer.",
+  "channel_interpretation": "In the worst-5% tail, margin (127) and revenue (97) dominate, with cash (85) also elevated, while funding and strategic sit near their base rate. The downside is an operating story - margin compression and demand loss during a heavy-investment phase - rather than a financing story, consistent with the V1 fragility thesis for a company carrying little financial debt but large fixed-investment commitments.",
+  "market_interpretation": "The market price (~$246) sits ABOVE the entire simulated distribution under both engines - the continuous run never produces a value above ~$224, the shocked run never above ~$234. On this conservative fixture the engine literally cannot manufacture today's price: the central intrinsic value is ~$96.52, roughly 61% below market. The gap is the market's implied bet that capex converts into far higher future cash flow (AI/AWS operating leverage) and/or that margins expand faster than the fixture assumes. The model cleanly isolates 'what these conservative fundamentals support' from 'what the market is paying for the AI build-out story.'",
+  "seed_interpretation": "Across seeds, z* (continuous) ranges 1,500-3,000 and z** (shocked) 1,500-2,000 - all comfortably within the 10,000 grid. As with MSFT, the point estimate of the required sample size is seed-sensitive (an elbow/percentile rule on finite batches), but the qualitative conclusion is stable: Amazon is a tractable convergence problem resolved well below the folk number on every seed. One shocked seed (99) flagged a very tight margin (3.0%) with a large batch recommendation, a reminder that the shocked stage is the harder convergence problem.",
+  "final_interpretation": "On a conservative FY2025-base fixture, Amazon's Monte Carlo intrinsic value is a distribution centred near $96/share - continuous mean ~$98.4, shocked mean ~$90.9 - with almost no negative paths (0.0% continuous, 0.05% shocked). The continuous stage resolves cheaply (z* = 2,000, 83% decision margin, reproducing the 10,000-path mean within 0.9% at one-fifth the compute); the shocked stage is harder (z** = 2,000, 36% margin) with an operating-channel-driven tail. The headline result is valuation: at ~$246 the market trades above the engine's entire simulated universe under both engines. The model, on these inputs, simply cannot reach today's price - the market is paying for an AI-capex-to-cash-flow conversion and margin trajectory more optimistic than this fixture encodes. As a real-world test, Amazon also illustrates the documented fragility of the capex-%-of-revenue assumption: a company spending >$100B/year on long-lived assets is precisely the case where that scaling assumption is least comfortable, and where the analyst's judgment on the capex fade does most of the work in the valuation.",
+  "fixture": "amazon_fixture.json",
+  "base_year": 2025,
+  "short_name": "Amazon"
+}
