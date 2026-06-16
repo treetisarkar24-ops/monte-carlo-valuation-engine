@@ -1,5 +1,5 @@
-# Monte Carlo Valuation Engine — dependencies
-# Core engine needs only NumPy. openpyxl is used by the usability layer
-# (excel_loader.py and the input-template tooling).
-numpy>=1.24
-openpyxl>=3.1
+streamlit
+numpy
+pandas
+altair
+openpyxl
