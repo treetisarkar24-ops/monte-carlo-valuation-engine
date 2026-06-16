@@ -1,0 +1,82 @@
+{
+  "company": "Microsoft Corporation",
+  "ticker": "MSFT",
+  "case_name": "Market-friendly (optimistic but reasonable) \u2014 beta held at 0.90",
+  "market_price": 450.0,
+  "market_price_note": "$450 is the round reference figure used in Planning Record \u00a76 ('market trading around $450'); illustrative, not a dated quote.",
+  "terminal_growth": 0.03,
+  "wacc": 0.0915742,
+  "dcf_per_share": 326.41244667432164,
+  "mc_median": 309.04762705884224,
+  "market_percentile": 93.95,
+  "z_star": 2000,
+  "purpose": "A market-friendly Microsoft case: same frozen engine, only the input fixture changed. Built to sit beside the conservative headline fixture so the page can show both a sober and a defensible-central read of the same company. Engine, convergence, and shock logic were NOT modified.",
+  "assumptions": [
+    [
+      "Starting revenue",
+      "$245,122M",
+      "Unchanged from headline fixture"
+    ],
+    [
+      "Net debt",
+      "-$26,000M",
+      "Net cash, unchanged"
+    ],
+    [
+      "Shares outstanding",
+      "7,432M",
+      "Unchanged"
+    ],
+    [
+      "Forecast horizon",
+      "10 years",
+      "Extended from 7 to 10 for a slow, stable fade"
+    ],
+    [
+      "Revenue growth",
+      "14% -> 5%",
+      "Fades slowly over 10 years"
+    ],
+    [
+      "Operating margin",
+      "44% -> 49%",
+      "Gradual expansion as higher-margin mix grows"
+    ],
+    [
+      "Capex % revenue",
+      "18% -> 11%",
+      "Elevated AI/datacenter build now, normalising"
+    ],
+    [
+      "D&A % revenue",
+      "8.5% flat",
+      "Unchanged"
+    ],
+    [
+      "NWC % revenue",
+      "0.5% flat",
+      "Unchanged"
+    ],
+    [
+      "Tax rate",
+      "19%",
+      "Unchanged"
+    ],
+    [
+      "Terminal growth",
+      "3.0%",
+      "Raised from 2.5%; still < WACC"
+    ],
+    [
+      "Beta",
+      "0.90",
+      "Microsoft's historical beta, held fixed \u2014 not tuned"
+    ],
+    [
+      "WACC",
+      "9.16%",
+      "Natural result of CAPM at beta 0.90 (rf 4.3% / ERP 5.5% / cost-of-debt 3.8% / debt-weight 1.5%). Fully defensible, nothing reverse-solved."
+    ]
+  ],
+  "note": "Every CAPM input is held at its conventional value; beta is Microsoft's historical 0.90, not reverse-solved to hit a target. The only changes from the conservative headline fixture are the forecast paths, the 10-year horizon, and terminal growth 2.5% -> 3.0%. This is the more market-aligned of the two reads; the 7-year / 2.5%-g headline fixture is the more cautious one. Both are honest."
+}

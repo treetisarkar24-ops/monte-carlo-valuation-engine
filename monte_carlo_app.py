@@ -37,19 +37,22 @@ import build_pdf_report                                   # noqa: E402
 import build_excel_output                                 # noqa: E402
 
 TEMPLATE_PATH = os.path.join(HERE, "templates", "MC_Input_Template_v2.xlsx")
-EXAMPLE_XLSX = os.path.join(HERE, "templates", "filled_ko_typed.xlsx")
+EXAMPLE_XLSX = os.path.join(HERE, "MSFT_Market_Friendly_Example", "MSFT_MarketFriendly_FILLED.xlsx")
 
 # Built-in worked examples — precomputed engine runs, loaded instantly.
+# Paths are relative to this file (HERE); each example lives in its own folder.
 EXAMPLES = {
-    "Amazon (AMZN)": {
-        "results": "amazon_results.json", "fixture": "amazon_fixture.json",
-        "company": "Amazon.com, Inc.", "ticker": "AMZN",
-        "price": 246.03, "date": "2026-06-05", "base_year": 2025,
+    "Microsoft (MSFT)": {
+        "results": "MSFT_Market_Friendly_Example/msft_B_results.json",
+        "fixture": "MSFT_Market_Friendly_Example/msft_B_fixture.json",
+        "company": "Microsoft Corporation", "ticker": "MSFT",
+        "price": 450.00, "date": "2026-06-15", "base_year": 2025,
     },
-    "Coca-Cola (KO)": {
-        "results": "ko_results.json", "fixture": "ko_fixture.json",
-        "company": "The Coca-Cola Company", "ticker": "KO",
-        "price": 82.67, "date": "2026-06-15", "base_year": 2025,
+    "NVIDIA (NVDA)": {
+        "results": "NVDA_Market_Friendly_Example/nvda_results.json",
+        "fixture": "NVDA_Market_Friendly_Example/nvda_fixture.json",
+        "company": "NVIDIA Corporation", "ticker": "NVDA",
+        "price": 211.93, "date": "2026-06-16", "base_year": 2025,
     },
 }
 
@@ -84,15 +87,15 @@ with col_a:
 with col_b:
     if os.path.exists(EXAMPLE_XLSX):
         with open(EXAMPLE_XLSX, "rb") as f:
-            st.download_button("Download a filled example (Coca-Cola)", data=f.read(),
-                               file_name="MC_filled_example_KO.xlsx",
+            st.download_button("Download a filled example (Microsoft)", data=f.read(),
+                               file_name="MC_filled_example_MSFT.xlsx",
                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 # ============================================================ Step 2: choose input
 st.header("2 · Choose what to value")
 mode = st.radio(
     "Run a built-in example, or upload your own filled template:",
-    ["Amazon (AMZN) — example", "Coca-Cola (KO) — example", "Upload my filled template"],
+    ["Microsoft (MSFT) — example", "NVIDIA (NVDA) — example", "Upload my filled template"],
     index=0,
 )
 is_upload = mode.startswith("Upload")
@@ -110,7 +113,7 @@ if is_upload:
 if is_upload:
     default_price = 0.0
 else:
-    default_price = EXAMPLES["Amazon (AMZN)" if mode.startswith("Amazon") else "Coca-Cola (KO)"]["price"]
+    default_price = EXAMPLES[mode.split(" — ")[0]]["price"]
 market_price = st.number_input(
     "Today's market price per share — used to place the price inside the distribution",
     min_value=0.0, value=float(default_price), step=1.0,
@@ -125,16 +128,16 @@ def current_signature():
 
 # ============================================================ helpers
 def example_key():
-    return "Amazon (AMZN)" if mode.startswith("Amazon") else "Coca-Cola (KO)"
+    return mode.split(" — ")[0]
 
 def build_example(price):
     cfg = EXAMPLES[example_key()]
-    results = json.load(open(os.path.join(RUNTIME, cfg["results"])))
-    base = DCFInputs(**json.load(open(os.path.join(RUNTIME, cfg["fixture"]))))
+    results = json.load(open(os.path.join(HERE, cfg["results"])))
+    base = DCFInputs(**json.load(open(os.path.join(HERE, cfg["fixture"]))))
     meta = lp.build_templated_meta(
         base, results, company=cfg["company"], ticker=cfg["ticker"],
         market_price=price, market_date=cfg["date"], base_year=cfg["base_year"],
-        fixture_rel=cfg["fixture"],
+        fixture_rel=os.path.basename(cfg["fixture"]),
     )
     meta["__meta_path__"] = os.path.join(RUNTIME, "x_meta.json")  # dirname is what matters
     return results, meta
