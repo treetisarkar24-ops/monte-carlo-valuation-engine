@@ -339,11 +339,15 @@ if state is not None:
     # benchmark callout
     if "benchmark" in cont:
         b = cont["benchmark"]
+        if "z_mean" in b and "folk_mean" in b:
+            stat, zc, fc = "mean", b["z_mean"], b["folk_mean"]
+        else:
+            stat, zc, fc = "median", b["z_median"], b["folk_median"]
         st.info(
             f"**Benchmark vs the folk 10,000:** the engine resolved at z\\* = "
             f"{b['z_star']:,} paths — **{b['compute_ratio']}×** the compute of a fixed "
-            f"10,000 run — yet the mean differs by only **{b['mean_gap_pct']:.1f}%** "
-            f"(${b['z_mean']:,.2f} vs ${b['folk_mean']:,.2f}). The engine picks the sample "
+            f"10,000 run — yet the {stat} differs by only **{b['mean_gap_pct']:.1f}%** "
+            f"(${zc:,.2f} vs ${fc:,.2f}). The engine picks the sample "
             f"size this company actually needs."
         )
 

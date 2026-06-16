@@ -223,10 +223,14 @@ def build(results, meta, out_path):
     story += [Spacer(1, 8), grid_table(prow, ss, money_right=True)]
     if "benchmark" in cont:
         b = cont["benchmark"]
+        if "z_mean" in b and "folk_mean" in b:
+            _stat, _zc, _fc = "mean", b["z_mean"], b["folk_mean"]
+        else:
+            _stat, _zc, _fc = "median", b["z_median"], b["folk_median"]
         story += [Spacer(1, 6),
                   P(f"Benchmark vs. the 10,000-path folk number: z* uses <b>{b['compute_ratio']}×</b> "
-                    f"the compute yet the mean differs by only <b>{pc(b['mean_gap_pct'])}</b> "
-                    f"({f2(b['z_mean'])} vs {f2(b['folk_mean'])}).", ss, "Body")]
+                    f"the compute yet the {_stat} differs by only <b>{pc(b['mean_gap_pct'])}</b> "
+                    f"({f2(_zc)} vs {f2(_fc)}).", ss, "Body")]
 
     # ---------- 4. Shocked ----------
     if shock:
