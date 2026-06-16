@@ -289,17 +289,17 @@ if state is not None:
     # market position
     pp = {int(k): v for k, v in cprod["pct"].items()}
     if mp >= cprod["max"]:
-        where = f"**above** the maximum simulated value (${cprod['max']:,.2f})"
+        where = f"**above** the maximum simulated value (\\${cprod['max']:,.2f})"
     elif mp <= cprod["min"]:
-        where = f"**below** the minimum simulated value (${cprod['min']:,.2f})"
+        where = f"**below** the minimum simulated value (\\${cprod['min']:,.2f})"
     else:
         below = [k for k in sorted(pp) if pp[k] <= mp]
         where = f"around the **{(below[-1] if below else 0)}th–{(below[-1]+5 if below else 5)}th percentile**"
     gap = abs(mp - cprod["median"]) / cprod["median"] * 100.0
     side = "above" if mp > cprod["median"] else "below"
     st.markdown(
-        f"Today's price of **${mp:,.2f}** sits {where} of the continuous distribution — "
-        f"**{gap:.1f}% {side}** the engine's median of ${cprod['median']:,.2f}."
+        f"Today's price of **\\${mp:,.2f}** sits {where} of the continuous distribution — "
+        f"**{gap:.1f}% {side}** the engine's median of \\${cprod['median']:,.2f}."
     )
 
     # distribution chart
@@ -319,22 +319,26 @@ if state is not None:
         st.altair_chart(alt.layer(*layers).properties(height=320), use_container_width=True)
         st.caption("Green line = continuous median.  Orange dashed line = today's market price.")
 
-    # convergence charts
-    st.subheader("Where the simulation converges")
-    st.markdown(
-        "Each curve shows how the disagreement between independent run-means (the "
-        "*scatter*) shrinks as the number of paths grows. The grey dashed line is the "
-        "precision bar; the solid line marks where the engine resolved — **z\\*** for the "
-        "continuous engine, **z\\*\\*** once shocks are added."
-    )
-    g1, g2 = st.columns(2)
-    with g1:
-        st.altair_chart(convergence_chart(cont["pair"], f"Continuous · z* = {cont['pair']['z_star']:,}", NAVY),
-                        use_container_width=True)
-    if shock:
-        with g2:
-            st.altair_chart(convergence_chart(shock["pair"], f"Shocked · z** = {shock['pair']['z_star']:,}", ORANGE),
-                            use_container_width=True)
+    # convergence charts — only when the curve trace is present in the results
+    def _has_curve(pr):
+        return isinstance(pr, dict) and all(k in pr for k in ("scatter", "n_grid", "precision_bar"))
+    conv = []
+    if _has_curve(cont.get("pair")):
+        conv.append((cont["pair"], f"Continuous · z* = {cont['pair']['z_star']:,}", NAVY))
+    if shock and _has_curve(shock.get("pair")):
+        conv.append((shock["pair"], f"Shocked · z** = {shock['pair']['z_star']:,}", ORANGE))
+    if conv:
+        st.subheader("Where the simulation converges")
+        st.markdown(
+            "Each curve shows how the disagreement between independent run-means (the "
+            "*scatter*) shrinks as the number of paths grows. The grey dashed line is the "
+            "precision bar; the solid line marks where the engine resolved — **z\\*** for the "
+            "continuous engine, **z\\*\\*** once shocks are added."
+        )
+        cols = st.columns(len(conv))
+        for col, (pr, title, color) in zip(cols, conv):
+            with col:
+                st.altair_chart(convergence_chart(pr, title, color), use_container_width=True)
 
     # benchmark callout
     if "benchmark" in cont:
